@@ -1,0 +1,17 @@
+{
+  "name": "Jogo da Memória",
+  "short_name": "Memória",
+  "description": "Jogo da Memória estilo Genius: repita a sequência de cores.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f1d1d",
+  "theme_color": "#1f1d1d",
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

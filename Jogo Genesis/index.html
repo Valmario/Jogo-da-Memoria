@@ -1,21 +1,115 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-tema="escuro">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Jogo da Memória estilo Genius: repita a sequência de cores, com vários modos, dificuldades e temas.">
+    <meta name="theme-color" content="#1f1d1d">
     <title>Jogo da Memória</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icone.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icone-192.png">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-game">
-        <div class="genius">
-            <div class="blue"></div>
-            <div class="yellow"></div>
-            <div class="green"></div>
-            <div class="red"></div>
+    <main class="jogo">
+        <header class="topo">
+            <h1 class="titulo">Jogo da Memória</h1>
+            <div class="botoes-topo">
+                <button class="btn-topo" id="btn-config" type="button">⚙️ Configurações</button>
+                <button class="btn-topo" id="btn-stats" type="button">📊 Estatísticas</button>
+                <button class="btn-topo" id="btn-som" type="button" aria-pressed="true">🔊 Som</button>
+            </div>
+        </header>
+
+        <div class="genius bloqueado" id="tabuleiro" role="group" aria-label="Tabuleiro do jogo">
+            <!-- Os botões coloridos são criados pelo script.js (4, 6 ou 8 cores). -->
+            <div class="centro" id="centro">
+                <span class="rotulo" id="rotulo-pontos">Pontos</span>
+                <strong class="pontos" id="pontos">0</strong>
+                <span class="recorde" id="linha-recorde">Recorde: <span id="recorde">0</span></span>
+                <button class="btn-iniciar" id="btn-iniciar" type="button">Iniciar</button>
+            </div>
         </div>
-    </div>
-    <script type="text/javascript" src="script.js"></script>
+
+        <div class="barra-tempo" id="barra-tempo" hidden><span></span></div>
+
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+        <p class="info-modo" id="info-modo"></p>
+    </main>
+
+    <canvas class="confete" id="confete" aria-hidden="true" hidden></canvas>
+
+    <dialog id="dlg-config" aria-labelledby="titulo-config">
+        <form method="dialog">
+            <h2 id="titulo-config">Configurações</h2>
+
+            <div class="campo">
+                <label for="sel-modo">Modo de jogo</label>
+                <select id="sel-modo"></select>
+                <small id="desc-modo"></small>
+            </div>
+
+            <div class="campo">
+                <label for="sel-dificuldade">Dificuldade</label>
+                <select id="sel-dificuldade"></select>
+            </div>
+
+            <div class="campo">
+                <label for="sel-cores">Cores no tabuleiro</label>
+                <select id="sel-cores"></select>
+                <small>"Crescente" começa com 4 cores e passa para 6 e 8 nos níveis 8 e 16.</small>
+            </div>
+
+            <p class="aviso-config" id="aviso-config" hidden>Modo, dificuldade e cores só podem ser mudados fora de uma partida.</p>
+
+            <div class="campo">
+                <label for="sel-tema">Tema</label>
+                <select id="sel-tema"></select>
+            </div>
+
+            <div class="campo">
+                <label for="sel-timbre">Som das notas</label>
+                <select id="sel-timbre"></select>
+            </div>
+
+            <div class="campo">
+                <label for="rng-volume">Volume</label>
+                <input id="rng-volume" type="range" min="0" max="100" step="5">
+            </div>
+
+            <label class="opcao"><input id="chk-vibracao" type="checkbox"> Vibração no celular</label>
+            <label class="opcao"><input id="chk-tempo" type="checkbox"> Limite de tempo por jogada <small id="desc-tempo"></small></label>
+
+            <div class="acoes">
+                <button class="btn-fechar" value="fechar">Fechar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dlg-stats" aria-labelledby="titulo-stats">
+        <form method="dialog">
+            <h2 id="titulo-stats">Estatísticas</h2>
+
+            <dl class="resumo" id="stats-resumo"></dl>
+
+            <h3>Taxa de erro por cor</h3>
+            <div id="stats-cores"></div>
+
+            <h3>Últimas partidas</h3>
+            <div id="stats-historico"></div>
+
+            <h3>Melhores pontuações</h3>
+            <ol class="ranking" id="stats-ranking"></ol>
+
+            <div class="acoes">
+                <button class="btn-perigo" id="btn-zerar" type="button">Zerar dados</button>
+                <button class="btn-fechar" value="fechar">Fechar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="logica.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

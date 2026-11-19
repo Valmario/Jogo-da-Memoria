@@ -1,50 +1,518 @@
-body{
+/* =========================================================
+   Temas: cada um define a mesma lista de variáveis.
+   --c-<cor> = cor apagada | --c-<cor>-aceso = cor acesa
+   ========================================================= */
+
+:root,
+html[data-tema="escuro"] {
+    --fundo: #1f1d1d;
+    --painel: #2b2828;
+    --anel: #111;
+    --texto: #f2f2f2;
+    --texto-suave: rgba(242, 242, 242, 0.7);
+    --linha: rgba(255, 255, 255, 0.25);
+    --borda: 0 solid transparent;
+
+    --c-vermelho: #a81818; --c-vermelho-aceso: #ff5252;
+    --c-azul: #1a3ea8;     --c-azul-aceso: #5a8bff;
+    --c-amarelo: #b59b00;  --c-amarelo-aceso: #fff04d;
+    --c-verde: #0b7a35;    --c-verde-aceso: #4dff88;
+    --c-laranja: #b85c00;  --c-laranja-aceso: #ff9f43;
+    --c-ciano: #0a8a94;    --c-ciano-aceso: #4df0ff;
+    --c-roxo: #6b2fa8;     --c-roxo-aceso: #c08bff;
+    --c-rosa: #b0306f;     --c-rosa-aceso: #ff7ab8;
+}
+
+html[data-tema="claro"] {
+    --fundo: #f4f1ea;
+    --painel: #ffffff;
+    --anel: #cfc8bb;
+    --texto: #1f1d1d;
+    --texto-suave: rgba(31, 29, 29, 0.7);
+    --linha: rgba(0, 0, 0, 0.25);
+
+    --c-vermelho: #e89a9a; --c-vermelho-aceso: #e11111;
+    --c-azul: #9fb5ee;     --c-azul-aceso: #1f4fe0;
+    --c-amarelo: #efe38a;  --c-amarelo-aceso: #ffd800;
+    --c-verde: #9ad7ae;    --c-verde-aceso: #0fb54e;
+    --c-laranja: #f0bf92;  --c-laranja-aceso: #ff7a00;
+    --c-ciano: #8fdde4;    --c-ciano-aceso: #00c2d1;
+    --c-roxo: #c9aee8;     --c-roxo-aceso: #8a2be2;
+    --c-rosa: #eeaac9;     --c-rosa-aceso: #ff2d8e;
+}
+
+html[data-tema="contraste"] {
+    --fundo: #000;
+    --painel: #000;
+    --anel: #000;
+    --texto: #fff;
+    --texto-suave: #fff;
+    --linha: #fff;
+    --borda: 4px solid #fff;
+
+    --c-vermelho: #800000; --c-vermelho-aceso: #ff2020;
+    --c-azul: #000080;     --c-azul-aceso: #3a6bff;
+    --c-amarelo: #808000;  --c-amarelo-aceso: #ffff00;
+    --c-verde: #006000;    --c-verde-aceso: #00ff40;
+    --c-laranja: #804000;  --c-laranja-aceso: #ff8000;
+    --c-ciano: #006a6a;    --c-ciano-aceso: #00ffff;
+    --c-roxo: #500080;     --c-roxo-aceso: #c040ff;
+    --c-rosa: #800040;     --c-rosa-aceso: #ff40a0;
+}
+
+/* Paleta de Okabe-Ito (distinguível em vários tipos de daltonismo) + símbolos nas cores */
+html[data-tema="daltonico"] {
+    --c-vermelho: #9c4400; --c-vermelho-aceso: #ff7a1a;
+    --c-azul: #004a73;     --c-azul-aceso: #2da2e8;
+    --c-amarelo: #9e9628;  --c-amarelo-aceso: #f0e442;
+    --c-verde: #006b4f;    --c-verde-aceso: #00d19a;
+    --c-laranja: #a56f00;  --c-laranja-aceso: #ffb300;
+    --c-ciano: #3d7ea0;    --c-ciano-aceso: #7cc9f2;
+    --c-roxo: #7a4a68;     --c-roxo-aceso: #e08ab8;
+    --c-rosa: #6b6b6b;     --c-rosa-aceso: #e0e0e0;
+}
+
+/* ---------- Base ---------- */
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
     margin: 0;
-    background-color: rgb(54, 51, 51);
+    min-height: 100vh;
+    background-color: var(--fundo);
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-.main-game{
-    height: 100vh;
-    width: 100vw;
+.jogo {
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
 }
 
-.genius{
+/* ---------- Topo ---------- */
+
+.topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+}
+
+.titulo {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.botoes-topo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-topo {
+    padding: 0.4em 0.9em;
+    border: 1px solid var(--linha);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--texto);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-topo:hover {
+    background-color: var(--linha);
+}
+
+/* ---------- Tabuleiro ---------- */
+
+.genius {
+    position: relative;
+    width: min(90vw, 62vh, 600px);
+    aspect-ratio: 1;
+    background-color: var(--anel);
+    border: var(--borda);
+    border-radius: 50%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+    transition: box-shadow 0.2s;
+}
+
+.genius.erro {
+    box-shadow: 0 0 0 6px #ff3b3b, 0 0 60px #ff3b3b;
+}
+
+/* ---------- Botões coloridos (fatias do círculo) ---------- */
+
+.pad {
+    position: absolute;
+    inset: 8px;
+    padding: 0;
+    border: 0;
+    background-color: var(--cor);
+    cursor: pointer;
+    transition: background-color 0.08s, filter 0.08s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pad.aceso {
+    background-color: var(--cor-acesa);
+    filter: brightness(1.15);
+}
+
+.genius.bloqueado .pad {
+    cursor: not-allowed;
+}
+
+.genius:not(.bloqueado) .pad:hover:not(.aceso) {
+    filter: brightness(1.2);
+}
+
+.pad:focus {
+    outline: none;
+}
+
+/* O clip-path recorta o contorno, então o foco do teclado aparece como um selo no centro da fatia */
+.pad:focus-visible .simbolo {
     display: grid;
-    grid-template-areas: 'verde vermelho''amarelo azul';
-    grid-gap: 10px;
-    background-color: #ffffff;
-    border-radius: 100%;
-    width: 600px;
-    height: 600px;
+    background: #fff;
+    color: #000;
+    text-shadow: none;
 }
 
-.blue{
-    grid-area: azul;
-    background-color: blue;
-    border-bottom-right-radius: 100%;
+.simbolo {
+    position: absolute;
+    display: none;
+    place-items: center;
+    width: 2.2em;
+    height: 2.2em;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    color: #fff;
+    font-size: clamp(1rem, 4.5vmin, 2rem);
+    line-height: 1;
+    text-shadow: 0 0 4px #000, 0 0 2px #000;
+    pointer-events: none;
 }
 
-.red{
-    grid-area: vermelho;
-    background-color: red;
-    border-top-right-radius: 100%;
+html[data-tema="daltonico"] .simbolo {
+    display: grid;
 }
 
-.yellow{
-    grid-area: amarelo;
-    background-color: yellow;
-    border-bottom-left-radius: 100%;
+/* ---------- Centro (placar + botão) ---------- */
+
+.centro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 38%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    background-color: var(--anel);
+    border: var(--borda);
+    border-radius: 50%;
+    color: var(--texto);
+    text-align: center;
 }
 
-.green{
-    grid-area: verde;
-    background-color: green;
-    border-top-left-radius: 100%;
+.rotulo,
+.recorde {
+    font-size: clamp(0.65rem, 2vmin, 0.9rem);
+    color: var(--texto-suave);
 }
 
-.selected{
-    opacity: 0.7;
+.rotulo {
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.pontos {
+    font-size: clamp(1.8rem, 8vmin, 3.4rem);
+    line-height: 1;
+}
+
+.pontos.duplo {
+    font-size: clamp(1.2rem, 5.5vmin, 2.4rem);
+}
+
+.pontos.pulsar {
+    animation: pulsar 0.45s ease-out;
+}
+
+@keyframes pulsar {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+
+.btn-iniciar {
+    margin-top: 0.4rem;
+    padding: 0.45em 1.1em;
+    border: 0;
+    border-radius: 999px;
+    background-color: var(--texto);
+    color: var(--fundo);
+    font: inherit;
+    font-size: clamp(0.75rem, 2.4vmin, 1rem);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-iniciar:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+/* ---------- Tempo, status e informações ---------- */
+
+.barra-tempo {
+    display: block;
+    width: min(90vw, 62vh, 600px);
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background-color: var(--linha);
+}
+
+.barra-tempo span {
+    display: block;
+    height: 100%;
+    background-color: var(--texto);
+    transform-origin: left center;
+}
+
+@keyframes encolher {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+}
+
+.status {
+    min-height: 1.5em;
+    margin: 0;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.info-modo {
+    margin: 0;
+    max-width: 36em;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.confete {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* ---------- Foco visível ---------- */
+
+.btn-iniciar:focus-visible,
+.btn-topo:focus-visible,
+.btn-fechar:focus-visible,
+.btn-perigo:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--texto);
+    outline-offset: 3px;
+}
+
+/* ---------- Janelas (configurações e estatísticas) ---------- */
+
+dialog {
+    width: min(92vw, 520px);
+    max-height: 90vh;
+    padding: 1.25rem;
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    background-color: var(--painel);
+    color: var(--texto);
+    overflow-y: auto;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+dialog h2 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+}
+
+dialog h3 {
+    margin: 1.2rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+.campo {
+    display: grid;
+    gap: 0.3rem;
+    margin-bottom: 0.9rem;
+}
+
+.campo label {
+    font-weight: 600;
+}
+
+.campo small,
+.opcao small,
+.aviso-config {
+    color: var(--texto-suave);
+    font-size: 0.82rem;
+}
+
+select {
+    padding: 0.5em;
+    border: 1px solid var(--linha);
+    border-radius: 8px;
+    background-color: var(--fundo);
+    color: var(--texto);
+    font: inherit;
+}
+
+select:disabled {
+    opacity: 0.5;
+}
+
+.opcao {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+}
+
+.aviso-config {
+    margin: 0 0 0.9rem;
+}
+
+.acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+}
+
+.btn-fechar,
+.btn-perigo {
+    padding: 0.5em 1.2em;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-fechar {
+    border: 0;
+    background-color: var(--texto);
+    color: var(--fundo);
+}
+
+.btn-perigo {
+    border: 1px solid #ff5252;
+    background: transparent;
+    color: #ff5252;
+}
+
+/* ---------- Estatísticas ---------- */
+
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.resumo div {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--linha);
+    border-radius: 10px;
+}
+
+.resumo dt {
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+}
+
+.resumo dd {
+    margin: 0.1rem 0 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.barra-cor {
+    display: grid;
+    grid-template-columns: 6.5em 1fr 7.5em;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+}
+
+.barra-cor .trilho {
+    height: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background-color: var(--linha);
+}
+
+.barra-cor .preenchimento {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+}
+
+.ranking {
+    margin: 0;
+    padding-left: 1.4rem;
+    font-size: 0.9rem;
+}
+
+.ranking li {
+    margin-bottom: 0.25rem;
+}
+
+.vazio {
+    margin: 0;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+#stats-historico svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    color: var(--texto);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pad,
+    .genius {
+        transition: none;
+    }
+
+    .pontos.pulsar {
+        animation: none;
+    }
 }
